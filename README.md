@@ -1,244 +1,171 @@
-# UptimeGuard AI - Server Downtime Predictor & Monitoring
+# 🚀 Serverdown Predictor
 
-A complete MVP web application for monitoring server health, predicting downtime risk before deployments, and managing maintenance windows with public status pages.
+### AI-Powered Server Downtime Prediction & Incident Intelligence Platform
 
-## 🎯 Features
+Serverdown Predictor is a full-stack intelligent monitoring platform designed to **predict potential server failures**, track incidents, and help teams plan maintenance proactively using AI-driven risk analysis.
 
-- **Real-time Server Monitoring**: Live metrics for CPU, RAM, response time, error rate, and database latency
-- **Downtime Risk Prediction**: Analyze deployment updates to predict downtime risk and duration
-- **Maintenance Mode**: Enable/disable maintenance with ETA countdown
-- **Public Status Page**: User-friendly status page showing current system state
-- **Automatic Incident Detection**: System automatically creates incidents when anomalies are detected
-- **Admin Dashboard**: Protected dashboard with live charts and metrics
-
-## 🛠️ Tech Stack
-
-### Backend
-- **FastAPI** (Python) - REST API
-- **SQLAlchemy** - ORM
-- **SQLite** - Database (MVP)
-- **JWT** - Authentication
-- **Uvicorn** - ASGI server
-
-### Frontend
-- **Next.js 14** (App Router)
-- **TypeScript**
-- **Tailwind CSS** - Styling
-- **Recharts** - Data visualization
-- **Axios** - HTTP client
-
-## 📋 Prerequisites
-
-- Python 3.8+
-- Node.js 18+
-- npm or yarn
-
-## 🚀 Setup Instructions
-
-### Backend Setup
-
-1. Navigate to the backend directory:
-```bash
-cd backend
-```
-
-2. Create a virtual environment:
-```bash
-python -m venv venv
-```
-
-3. Activate the virtual environment:
-
-**Windows:**
-```bash
-venv\Scripts\activate
-```
-
-**Linux/Mac:**
-```bash
-source venv/bin/activate
-```
-
-4. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-5. Run the backend server:
-```bash
-uvicorn main:app --reload
-```
-
-The backend will be available at `http://localhost:8000`
-
-**Default Admin Credentials:**
-- Email: `admin@uptimeguard.ai`
-- Password: `admin123`
-
-The admin user is automatically created on first startup.
-
-### Frontend Setup
-
-1. Navigate to the frontend directory:
-```bash
-cd frontend
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Run the development server:
-```bash
-npm run dev
-```
-
-The frontend will be available at `http://localhost:3000`
-
-## 📁 Project Structure
-
-```
-.
-├── backend/
-│   ├── main.py                 # FastAPI app entry point
-│   ├── database.py             # Database configuration
-│   ├── models.py               # SQLAlchemy models
-│   ├── schemas.py              # Pydantic schemas
-│   ├── auth.py                 # Authentication utilities
-│   ├── requirements.txt        # Python dependencies
-│   ├── routes/
-│   │   ├── auth_routes.py      # Authentication endpoints
-│   │   ├── metrics_routes.py   # Metrics endpoints
-│   │   ├── incident_routes.py  # Incident endpoints
-│   │   ├── maintenance_routes.py # Maintenance endpoints
-│   │   └── predict_routes.py   # Risk prediction endpoints
-│   └── services/
-│       ├── metrics_simulator.py # Simulated metrics generator
-│       └── risk_predictor.py   # Rule-based risk predictor
-│
-└── frontend/
-    ├── app/
-    │   ├── login/              # Login page
-    │   ├── dashboard/          # Admin dashboard
-    │   │   ├── page.tsx        # Overview dashboard
-    │   │   ├── update-planner/ # Update risk prediction
-    │   │   ├── incidents/      # Incidents page
-    │   │   └── maintenance/    # Maintenance control
-    │   └── status/             # Public status page
-    ├── components/             # Reusable components
-    └── lib/
-        ├── api.ts              # API client
-        └── auth.ts             # Auth utilities
-```
-
-## 🔑 API Endpoints
-
-### Authentication
-- `POST /auth/login` - Login and get JWT token
-
-### Metrics
-- `GET /metrics/live` - Get live system metrics
-
-### Incidents
-- `GET /incidents` - Get all incidents
-- `POST /incidents/create` - Create incident (admin only)
-
-### Maintenance
-- `GET /maintenance` - Get maintenance status
-- `POST /maintenance/enable` - Enable maintenance mode (admin only)
-- `POST /maintenance/disable` - Disable maintenance mode (admin only)
-
-### Prediction
-- `POST /predict/update-risk` - Predict downtime risk for an update (admin only)
-
-## 🎨 Features Overview
-
-### 1. Admin Dashboard (`/dashboard`)
-- Real-time system health cards
-- Live charts for CPU, RAM, response time, and error rate
-- Recent incidents table
-- Auto-refreshes every 3 seconds
-
-### 2. Update Planner (`/dashboard/update-planner`)
-- Input update details (title, type, services, migration, etc.)
-- Get risk score (0-100) and risk level (Low/Medium/High)
-- Predicted downtime range
-- Risk reasons and recommendations
-
-### 3. Public Status Page (`/status`)
-- Current system status (Operational/Degraded/Down/Maintenance)
-- Maintenance ETA countdown with progress bar
-- Recent incidents list
-- No authentication required
-
-### 4. Maintenance Control (`/dashboard/maintenance`)
-- Enable/disable maintenance mode
-- Set ETA in minutes
-- View current maintenance status
-
-## 🔒 Security Notes
-
-- JWT tokens are stored in localStorage (for MVP)
-- In production, use httpOnly cookies for tokens
-- Change the SECRET_KEY in `backend/auth.py` for production
-- Add rate limiting and input validation for production
-
-## 🧪 Testing the Application
-
-1. **Login**: Go to `/login` and use the default credentials
-2. **View Dashboard**: See live metrics updating every 3 seconds
-3. **Test Update Planner**: 
-   - Go to `/dashboard/update-planner`
-   - Fill in update details
-   - Click "Analyze Update Risk"
-   - See risk prediction
-4. **Enable Maintenance**:
-   - Go to `/dashboard/maintenance`
-   - Set ETA and enable maintenance
-   - Check `/status` page to see maintenance mode
-5. **View Status Page**: Go to `/status` (no login required)
-
-## 📊 Metrics Simulation
-
-The backend simulates realistic server metrics:
-- CPU and RAM fluctuate smoothly
-- Random spikes occur occasionally
-- Error rate and response time affect system status
-- Status changes: operational → degraded → down based on thresholds
-
-## 🎯 Risk Prediction Logic
-
-The risk predictor uses rule-based scoring:
-- **Update Type**: Major (+25), Hotfix (+15), Minor (+5)
-- **Database Migration**: +30 points
-- **Critical Services**: +20 per service (payments, database, auth)
-- **Long Deployments**: +15 for >15 minutes
-- **High-Risk Keywords**: +10 (schema, migration, refactor, etc.)
-
-Risk Levels:
-- **0-30**: Low
-- **31-60**: Medium
-- **61-100**: High
-
-## 🚧 Future Enhancements
-
-- Replace rule-based predictor with ML model
-- Add email/telegram notifications
-- Real server metrics integration
-- User management (multiple admins)
-- Historical data analysis
-- Custom alert thresholds
-- Database migration to PostgreSQL/MySQL
-
-## 📝 License
-
-This is an MVP project for demonstration purposes.
-
-## 🤝 Contributing
-
-This is a complete MVP. Feel free to extend it with additional features!
+Built with a modern architecture using **FastAPI**, **Next.js**, and machine-learning based risk prediction.
 
 ---
 
-**Built with ❤️ for server monitoring and downtime prediction**
+## ✨ Overview
+
+Traditional monitoring tools react *after* failures happen.
+Serverdown Predictor focuses on **predictive intelligence** — analyzing metrics to identify risks before downtime occurs.
+
+This project demonstrates:
+
+* Real-time system monitoring dashboards
+* Predictive maintenance planning
+* Incident tracking workflows
+* AI-based risk scoring
+
+---
+
+## 🧠 Key Features
+
+✅ AI Risk Prediction Engine
+✅ Incident Management Dashboard
+✅ Maintenance Planning Module
+✅ Metrics Visualization Panels
+✅ Authentication & API Layer
+✅ Modular Backend Architecture
+
+---
+
+## 🏗️ System Architecture
+
+High-level flow:
+
+User Dashboard → Next.js Frontend
+⬇
+FastAPI Backend APIs
+⬇
+Metrics Simulator + Risk Predictor
+⬇
+Database Layer
+
+Design Principles:
+
+* Modular backend services
+* Separation of concerns
+* Scalable API structure
+* Clean UI component architecture
+
+---
+
+## ⚙️ Tech Stack
+
+### Frontend
+
+* Next.js (App Router)
+* TypeScript
+* TailwindCSS
+
+### Backend
+
+* FastAPI
+* Python
+* Pydantic Schemas
+* Modular API Routes
+
+### AI / Logic
+
+* Risk Prediction Service
+* Metrics Simulation Engine
+
+---
+
+## 📂 Project Structure
+
+```
+Serverdown/
+├── backend/
+│   ├── routes/
+│   ├── services/
+│   ├── models.py
+│   └── main.py
+│
+├── frontend/
+│   ├── app/
+│   ├── components/
+│   └── lib/
+│
+├── README.md
+└── QUICKSTART.md
+```
+
+---
+
+## 🚀 Quick Start
+
+### 1️⃣ Backend
+
+```
+cd backend
+python -m venv venv
+source venv/bin/activate   # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8001
+```
+
+### 2️⃣ Frontend
+
+```
+cd frontend
+npm install
+npm run dev
+```
+
+Frontend runs on:
+
+```
+http://localhost:3000
+```
+
+---
+
+## 🔐 API Modules
+
+* `/auth` — authentication routes
+* `/metrics` — system monitoring metrics
+* `/incident` — incident tracking
+* `/maintenance` — maintenance planning
+* `/predict` — AI risk scoring
+
+---
+
+## 📊 Product Vision
+
+Serverdown Predictor is designed as a prototype for a **future DevOps intelligence platform**, combining:
+
+* Observability
+* Predictive analytics
+* Operational automation
+
+Potential future expansions:
+
+* Real cloud metrics integration (AWS/GCP)
+* LLM-powered incident summaries
+* Alert automation engine
+* SaaS multi-tenant architecture
+
+---
+
+## 👨‍💻 Author
+
+**Avinash Tanikonda**
+B.Tech CSE — AI/ML Enthusiast | Product & Systems Builder
+
+---
+
+## ⭐ Why This Project Matters
+
+This repository showcases:
+
+* Full-stack system design
+* AI integration in real-world workflows
+* Production-style modular backend architecture
+* Modern frontend dashboard engineering
+
+If you find this project interesting, feel free to ⭐ the repository!
